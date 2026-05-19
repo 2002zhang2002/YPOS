@@ -288,17 +288,40 @@
     return { min: axisMin, max: axisMax, ticks };
   }
 
+  function peerAverageForCurrentCustomer(key) {
+    const current = state.rows.find((item) => shopKey(item) === state.selectedShopId);
+    if (!current) return null;
+    const level = String(current.cust_seg_name || "");
+    const market = String(current.market_type || current.work_port_name || "");
+    if (!level || !market) return null;
+    const peers = state.rows
+      .filter((row) => String(row.cust_seg_name || "") === level)
+      .filter((row) => String(row.market_type || row.work_port_name || "") === market)
+      .map((row) => finite(row[key]))
+      .filter((value) => value !== null);
+    if (!peers.length) return null;
+    return {
+      value: peers.reduce((sum, value) => sum + value, 0) / peers.length,
+      count: peers.length,
+      level,
+      market,
+    };
+  }
+
   function drawMiniTrend(svgId, tipId, trendRows, config) {
     const svg = $(svgId);
     const tip = $(tipId);
     if (!svg) return;
     const plotRows = weeklyTrendRows(trendRows);
-    const width = 520;
-    const height = 220;
-    const pad = { left: 48, right: 18, top: 18, bottom: 34 };
+    const width = 640;
+    const height = 248;
+    const pad = { left: 44, right: 12, top: 10, bottom: 28 };
     const innerW = width - pad.left - pad.right;
     const innerH = height - pad.top - pad.bottom;
-    const domain = readableScale(plotRows.map((row) => row[config.key]), 6);
+    const peerAverage = peerAverageForCurrentCustomer(config.key);
+    const scaleValues = plotRows.map((row) => row[config.key]);
+    if (peerAverage) scaleValues.push(peerAverage.value);
+    const domain = readableScale(scaleValues, 7);
     const x = (index) => pad.left + (plotRows.length <= 1 ? innerW / 2 : index / (plotRows.length - 1) * innerW);
     const y = (value) => pad.top + (domain.max - value) / (domain.max - domain.min || 1) * innerH;
     const points = plotRows
@@ -314,12 +337,14 @@
 
     const line = points.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
     const area = `${pad.left},${pad.top + innerH} ${line} ${pad.left + innerW},${pad.top + innerH}`;
-    const tickValues = [domain.min, domain.min + (domain.max - domain.min) / 2, domain.max];
+    const tickValues = domain.ticks;
     const selectedIndex = plotRows.findIndex((row) => row.biz_date === day);
     const selectedX = selectedIndex >= 0 ? x(selectedIndex) : null;
     const selectedPoint = selectedX === null ? null : points.find((point) => point.row.biz_date === day);
     const firstDate = plotRows[0]?.biz_date || "";
     const lastDate = plotRows[plotRows.length - 1]?.biz_date || "";
+    const peerY = peerAverage ? y(peerAverage.value) : null;
+    const peerLabel = peerAverage ? `同档同市场均值 ${n(peerAverage.value, config.digits)}` : "";
 
     svg.innerHTML = `
       <defs>
@@ -334,6 +359,10 @@
         return `<line x1="${pad.left}" x2="${pad.left + innerW}" y1="${ty}" y2="${ty}" class="mini-grid"></line>
           <text x="${pad.left - 8}" y="${ty + 4}" text-anchor="end" class="mini-axis-label">${n(value, config.digits)}</text>`;
       }).join("")}
+      ${peerY === null ? "" : `
+        <line x1="${pad.left}" x2="${pad.left + innerW}" y1="${peerY}" y2="${peerY}" class="mini-peer-line"></line>
+        <text x="${pad.left + innerW - 4}" y="${Math.max(pad.top + 12, peerY - 6)}" text-anchor="end" class="mini-peer-label">${safeText(peerLabel)}</text>
+      `}
       <polygon points="${area}" fill="url(#${svgId}Fill)"></polygon>
       <polyline points="${line}" fill="none" stroke="${config.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
       ${selectedX === null ? "" : `<line x1="${selectedX}" x2="${selectedX}" y1="${pad.top}" y2="${pad.top + innerH}" class="selected-week-line"></line>`}
@@ -353,6 +382,7 @@
             <b>${safeText(dot.dataset.date || "")}</b>
             <em>${safeText(config.label)} ${n(value, config.digits)}</em>
           </div>
+          ${peerAverage ? `<div class="tip-grid single"><span>同档同市场均值</span><b>${n(peerAverage.value, config.digits)}</b></div>` : ""}
         `;
         tip.style.display = "block";
         tip.style.left = `${Math.min(rect.width - 260, Math.max(8, event.offsetX + 12))}px`;
