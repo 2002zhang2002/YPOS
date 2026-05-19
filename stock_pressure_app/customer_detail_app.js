@@ -346,7 +346,17 @@
     const firstDate = plotRows[0]?.biz_date || "";
     const lastDate = plotRows[plotRows.length - 1]?.biz_date || "";
     const peerY = peerAverage ? y(peerAverage.value) : null;
-    const peerLabel = peerAverage ? `同档同市场均值 ${n(peerAverage.value, config.digits)}` : "";
+    const peerLabel = peerAverage
+      ? `${innerW < 470 ? "均值" : "同档同市场均值"} ${n(peerAverage.value, config.digits)}`
+      : "";
+    const peerLabelWidth = Math.min(innerW - 18, Math.max(74, peerLabel.length * 11));
+    const selectedNearRight = selectedX !== null && selectedX > pad.left + innerW * 0.62;
+    const peerLabelX = peerAverage
+      ? (selectedNearRight ? pad.left + 8 : pad.left + innerW - peerLabelWidth - 8)
+      : 0;
+    const peerLabelY = peerY === null ? 0 : Math.min(pad.top + innerH - 24, Math.max(pad.top + 10, peerY - 24));
+    const peerTextAnchor = selectedNearRight ? "start" : "end";
+    const peerTextX = selectedNearRight ? peerLabelX + 8 : peerLabelX + peerLabelWidth - 8;
 
     svg.innerHTML = `
       <defs>
@@ -363,7 +373,8 @@
       }).join("")}
       ${peerY === null ? "" : `
         <line x1="${pad.left}" x2="${pad.left + innerW}" y1="${peerY}" y2="${peerY}" class="mini-peer-line"></line>
-        <text x="${pad.left + innerW - 4}" y="${Math.max(pad.top + 12, peerY - 6)}" text-anchor="end" class="mini-peer-label">${safeText(peerLabel)}</text>
+        <rect x="${peerLabelX}" y="${peerLabelY}" width="${peerLabelWidth}" height="20" rx="10" class="mini-peer-label-bg"></rect>
+        <text x="${peerTextX}" y="${peerLabelY + 14}" text-anchor="${peerTextAnchor}" class="mini-peer-label">${safeText(peerLabel)}</text>
       `}
       <polygon points="${area}" fill="url(#${svgId}Fill)"></polygon>
       <polyline points="${line}" fill="none" stroke="${config.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
