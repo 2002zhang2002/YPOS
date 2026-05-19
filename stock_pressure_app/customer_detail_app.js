@@ -14,6 +14,7 @@
     nearbyLayer: null,
     customerGeoMap: new Map(),
     profileFocus: "trend",
+    currentTrendRows: [],
   };
 
   const $ = (id) => document.getElementById(id);
@@ -313,8 +314,9 @@
     const tip = $(tipId);
     if (!svg) return;
     const plotRows = weeklyTrendRows(trendRows);
-    const width = 640;
-    const height = 248;
+    const box = svg.parentElement?.getBoundingClientRect();
+    const width = Math.max(420, Math.round(box?.width || 640));
+    const height = Math.max(190, Math.round(box?.height || 248));
     const pad = { left: 44, right: 12, top: 10, bottom: 28 };
     const innerW = width - pad.left - pad.right;
     const innerH = height - pad.top - pad.bottom;
@@ -391,6 +393,28 @@
       dot.addEventListener("mouseleave", () => {
         tip.style.display = "none";
       });
+    });
+  }
+
+  function redrawCustomerTrends() {
+    if (!state.currentTrendRows.length) return;
+    drawMiniTrend("customerStockChart", "customerStockTip", state.currentTrendRows, {
+      key: "stock_qty",
+      label: "库存",
+      color: "#0f766e",
+      digits: 1,
+    });
+    drawMiniTrend("customerRatioChart", "customerRatioTip", state.currentTrendRows, {
+      key: "stock_sale_ratio_7d_monthly",
+      label: "存销比",
+      color: "#d69a2d",
+      digits: 2,
+    });
+    drawMiniTrend("customerSaleChart", "customerSaleTip", state.currentTrendRows, {
+      key: "sale_qty_7d",
+      label: "7天动销",
+      color: "#2563eb",
+      digits: 1,
     });
   }
 
@@ -553,6 +577,7 @@
       layout.classList.toggle("is-trend-focus", state.profileFocus !== "map");
     }
     window.setTimeout(() => {
+      redrawCustomerTrends();
       if (state.nearbyMap) state.nearbyMap.invalidateSize();
     }, 160);
   }
@@ -753,27 +778,12 @@
         $("customerTrendMeta").textContent = "未找到该客户趋势文件。";
         renderLoadingCharts("暂无趋势数据");
         $("customerTrendStats").innerHTML = "";
+        state.currentTrendRows = [];
         return;
       }
+      state.currentTrendRows = trendRows;
       renderTrendStats(trendRows);
-      drawMiniTrend("customerStockChart", "customerStockTip", trendRows, {
-        key: "stock_qty",
-        label: "库存",
-        color: "#0f766e",
-        digits: 1,
-      });
-      drawMiniTrend("customerRatioChart", "customerRatioTip", trendRows, {
-        key: "stock_sale_ratio_7d_monthly",
-        label: "存销比",
-        color: "#d69a2d",
-        digits: 2,
-      });
-      drawMiniTrend("customerSaleChart", "customerSaleTip", trendRows, {
-        key: "sale_qty_7d",
-        label: "7天动销",
-        color: "#2563eb",
-        digits: 1,
-      });
+      redrawCustomerTrends();
     });
   }
 
@@ -789,6 +799,10 @@
       state.rows = rows.map(mergeCustomerGeo).sort((a, b) => num(b.stock_qty) - num(a.stock_qty));
       const fallback = state.rows[0] ? shopKey(state.rows[0]) : "";
       selectCustomer(state.selectedShopId || fallback);
+    });
+    window.addEventListener("resize", () => {
+      window.clearTimeout(state.resizeTimer);
+      state.resizeTimer = window.setTimeout(redrawCustomerTrends, 120);
     });
   }
 

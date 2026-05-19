@@ -1054,11 +1054,15 @@ svg text { fill: var(--muted); font-size: 12px; }
 }
 
 .profile-chart {
-  height: 250px;
+  height: clamp(250px, 27vh, 340px);
 }
 
 .customer-profile-layout.is-map-focus .profile-chart {
-  height: 168px;
+  height: 172px;
+}
+
+.customer-profile-layout.is-trend-focus .profile-chart {
+  height: clamp(270px, 30vh, 360px);
 }
 
 .customer-profile-layout.is-map-focus .customer-trend-stats {
