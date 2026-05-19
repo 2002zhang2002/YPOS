@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&#24211;&#23384;&#21608;&#36235;&#21183;&#20998;&#26512;</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="modern-page">
+  <header class="modern-hero inventory-hero">
+    <div>
+      <p class="eyebrow">Weekly Inventory Pulse</p>
+      <h1>&#20108;&#19977;&#26143;&#32456;&#31471;&#23458;&#25143;&#24211;&#23384;&#21608;&#26399;&#24555;&#29031;</h1>
+      <p>&#25353;&#35746;&#36135;&#21608;&#26399;&#30475;&#24211;&#23384;&#26356;&#31283;&#65306;&#27599; 7 &#22825;&#21462;&#19968;&#27425;&#21608;&#26399;&#24555;&#29031;&#65292;&#21516;&#26102;&#30475;&#29615;&#27604;&#21644;&#21435;&#24180;&#21516;&#26399;&#65292;&#36991;&#20813;&#19981;&#21516;&#35746;&#36135;&#26085;&#36896;&#25104;&#30340;&#26085;&#27874;&#21160;&#22122;&#22768;&#12290;</p>
+    </div>
+    <nav class="hero-actions">
+      <a href="dashboard.html">&#39550;&#39542;&#33329;</a>
+      <a href="index.html">&#22320;&#22270;</a>
+      <a href="strategy.html">&#35774;&#35745;&#24605;&#36335;</a>
+    </nav>
+  </header>
+
+  <main class="weekly-shell">
+    <section class="weekly-kpis" id="weeklyKpis"></section>
+
+    <section class="weekly-board">
+      <article class="panel modern-panel chart-panel">
+        <div class="panel-head compact">
+          <div>
+            <h2>&#24211;&#23384;&#21608;&#26399;&#24555;&#29031;&#65306;&#20170;&#24180; vs &#21435;&#24180;&#21516;&#26399;</h2>
+            <p>&#40736;&#26631;&#24748;&#20572;&#26597;&#30475;&#24211;&#23384;&#29615;&#27604;&#12289;&#21516;&#27604;&#24046;&#20540;&#21644;&#24133;&#24230;&#65307;&#28857;&#20987;&#21608;&#26399;&#28857;&#36827;&#20837;&#23458;&#25143;&#24211;&#23384;&#26126;&#32454;&#39029;&#12290;</p>
+          </div>
+          <div class="legend">
+            <span><i class="line current"></i>&#20170;&#24180;&#24211;&#23384;</span>
+            <span><i class="line previous"></i>&#21435;&#24180;&#21516;&#26399;</span>
+          </div>
+        </div>
+        <div class="chart-status-layout">
+          <div class="chart-main">
+            <div class="chart-wrap weekly-chart">
+              <svg id="stockTrendChart" viewBox="0 0 1160 420" preserveAspectRatio="none"></svg>
+              <div class="chart-tooltip" id="stockTooltip"></div>
+            </div>
+            <div class="timeline-zoom">
+              <div class="zoom-head">
+                <span>&#26102;&#38388;&#36724;&#32553;&#25918;</span>
+                <b id="rangeLabel">-</b>
+              </div>
+              <svg id="timelineChart" class="timeline-chart" viewBox="0 0 1160 56" preserveAspectRatio="none"></svg>
+              <div class="range-stack">
+                <input id="rangeStart" type="range" min="0" max="0" value="0">
+                <input id="rangeEnd" type="range" min="0" max="0" value="0">
+              </div>
+            </div>
+          </div>
+          <aside class="trend-status-card" id="stockStatusCard"></aside>
+        </div>
+      </article>
+    </section>
+
+    <section class="weekly-board ratio-board">
+      <article class="panel modern-panel chart-panel">
+        <div class="panel-head compact">
+          <div>
+            <h2>&#23384;&#38144;&#27604;&#21608;&#36235;&#21183;</h2>
+            <p>&#23384;&#38144;&#27604;&#24050;&#25353;&#32479;&#19968;&#21475;&#24452;&#22788;&#29702;&#12290;&#29615;&#27604;&#21644;&#21516;&#27604;&#22343;&#25353;&#24046;&#39069;&#23637;&#31034;&#65292;&#19981;&#24403;&#30334;&#20998;&#27604;&#12290;</p>
+          </div>
+          <div class="legend">
+            <span><i class="line current"></i>&#20170;&#24180;</span>
+            <span><i class="line previous"></i>&#21435;&#24180;&#21516;&#26399;</span>
+          </div>
+        </div>
+        <div class="chart-status-layout">
+          <div class="chart-main">
+            <div class="chart-wrap weekly-chart small-weekly-chart">
+              <svg id="ratioCompareChart" viewBox="0 0 1160 360" preserveAspectRatio="none"></svg>
+              <div class="chart-tooltip" id="ratioTooltip"></div>
+            </div>
+            <div class="timeline-zoom compact-timeline">
+              <div class="zoom-head">
+                <span>&#26102;&#38388;&#36724;&#32553;&#25918;</span>
+                <b id="ratioRangeLabel">-</b>
+              </div>
+              <svg id="ratioTimelineChart" class="timeline-chart" viewBox="0 0 1160 56" preserveAspectRatio="none"></svg>
+              <div class="range-stack">
+                <input id="ratioRangeStart" type="range" min="0" max="0" value="0">
+                <input id="ratioRangeEnd" type="range" min="0" max="0" value="0">
+              </div>
+            </div>
+          </div>
+          <aside class="trend-status-card" id="ratioStatusCard"></aside>
+        </div>
+      </article>
+
+    </section>
+
+    <section class="panel modern-panel chart-panel sale-board">
+      <div class="panel-head compact">
+        <div>
+          <h2>7&#22825;&#21160;&#38144;&#21608;&#36235;&#21183;</h2>
+          <p>&#27599;&#20010;&#21608;&#26399;&#30475;&#36817; 7 &#22825;&#32047;&#35745;&#21160;&#38144;&#65292;&#24182;&#21516;&#26102;&#35266;&#23519;&#25143;&#22343;&#26465;&#25968;&#30340;&#29615;&#27604;&#21464;&#21270;&#12290;</p>
+        </div>
+        <div class="legend">
+          <span><i class="line current"></i>7&#22825;&#21160;&#38144;</span>
+          <span><i class="line previous"></i>&#21435;&#24180;&#21516;&#26399;</span>
+          <button class="panel-action-btn" id="saleRangeCompareOpen" type="button">&#21306;&#38388;&#23545;&#27604;</button>
+        </div>
+      </div>
+      <div class="chart-status-layout">
+        <div class="chart-main">
+          <div class="chart-wrap weekly-chart small-weekly-chart">
+            <svg id="saleTrendChart" viewBox="0 0 1160 360" preserveAspectRatio="none"></svg>
+            <div class="chart-tooltip" id="saleTooltip"></div>
+          </div>
+          <div class="timeline-zoom compact-timeline">
+            <div class="zoom-head">
+              <span>&#26102;&#38388;&#36724;&#32553;&#25918;</span>
+              <b id="saleRangeLabel">-</b>
+            </div>
+            <svg id="saleTimelineChart" class="timeline-chart" viewBox="0 0 1160 56" preserveAspectRatio="none"></svg>
+            <div class="range-stack">
+              <input id="saleRangeStart" type="range" min="0" max="0" value="0">
+              <input id="saleRangeEnd" type="range" min="0" max="0" value="0">
+            </div>
+          </div>
+        </div>
+        <aside class="trend-status-card" id="saleStatusCard"></aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="saleRangeModal" aria-hidden="true">
+    <div class="modal-card range-compare-card" id="saleRangeCompare"></div>
+  </div>
+
+  <script src="data/diagnosis_app_data.js"></script>
+  <script src="inventory_app.js"></script>
+</body>
+</html>

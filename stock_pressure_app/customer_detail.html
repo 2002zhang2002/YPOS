@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>客户画像</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="modern-page">
+  <header class="modern-hero detail-hero">
+    <div>
+      <p class="eyebrow">Customer Profile</p>
+      <h1 id="customerTrendTitle">客户画像</h1>
+      <p id="customerTrendMeta">加载客户趋势和附近客户地图。</p>
+    </div>
+    <nav class="hero-actions">
+      <a id="backToList" href="inventory_detail.html">返回客户明细</a>
+      <a href="inventory.html">返回库存趋势</a>
+    </nav>
+  </header>
+
+  <main class="weekly-shell customer-profile-shell">
+    <section class="customer-profile-layout is-trend-focus" id="customerProfileLayout">
+      <article class="panel modern-panel customer-trend-panel customer-profile-panel">
+        <div class="customer-trend-stats" id="customerTrendStats"></div>
+
+        <article class="customer-mini-card">
+          <div class="mini-card-head">
+            <h3>库存趋势</h3>
+            <span>7天周期库存快照</span>
+          </div>
+          <div class="customer-mini-chart profile-chart">
+            <svg id="customerStockChart" role="img" aria-label="客户库存趋势"></svg>
+            <div class="chart-tooltip" id="customerStockTip"></div>
+          </div>
+        </article>
+
+        <article class="customer-mini-card">
+          <div class="mini-card-head">
+            <h3>存销比趋势</h3>
+            <span>7天周期月化口径</span>
+          </div>
+          <div class="customer-mini-chart profile-chart">
+            <svg id="customerRatioChart" role="img" aria-label="客户存销比趋势"></svg>
+            <div class="chart-tooltip" id="customerRatioTip"></div>
+          </div>
+        </article>
+
+        <article class="customer-mini-card">
+          <div class="mini-card-head">
+            <h3>动销趋势</h3>
+            <span>7天周期累计</span>
+          </div>
+          <div class="customer-mini-chart profile-chart">
+            <svg id="customerSaleChart" role="img" aria-label="客户7天动销趋势"></svg>
+            <div class="chart-tooltip" id="customerSaleTip"></div>
+          </div>
+        </article>
+      </article>
+
+      <aside class="panel modern-panel customer-map-profile-panel">
+        <div class="panel-head compact">
+          <div>
+            <h2>附近客户地图</h2>
+            <p id="nearbyMapMeta">以当前客户为中心，地图点位可直接点击钻取。</p>
+          </div>
+        </div>
+        <div class="nearby-map-filters">
+          <label class="nearby-radius-control">
+            <span>附近半径</span>
+            <input id="nearbyRadiusKm" type="number" min="0.1" max="50" step="0.5" value="3">
+            <em id="nearbyRadiusValue">3 km</em>
+          </label>
+          <label><input id="nearbySameLevel" type="checkbox"> 同客户档位</label>
+          <label><input id="nearbySameMarket" type="checkbox"> 同市场类型</label>
+        </div>
+        <div class="nearby-color-legend" aria-label="存销比颜色区间">
+          <span><i style="background:#16a34a"></i>存销比 &lt; 4</span>
+          <span><i style="background:#eab308"></i>4-8</span>
+          <span><i style="background:#f97316"></i>8-15</span>
+          <span><i style="background:#dc2626"></i>≥15</span>
+        </div>
+        <div class="nearby-map profile-map" id="nearbyMap"></div>
+        <div class="nearby-customer-strip" id="nearbyCustomerStrip"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="data/diagnosis_app_data.js"></script>
+  <script src="customer_detail_app.js"></script>
+</body>
+</html>

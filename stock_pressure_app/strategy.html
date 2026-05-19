@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>库存动销分析设计思路</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="strategy-body">
+  <header class="strategy-hero">
+    <div>
+      <p class="eyebrow">Analysis Blueprint</p>
+      <h1>茌平区二星 / 三星终端库存动销分析设计稿</h1>
+      <p class="hero-copy">这个页面专门展示分析思路：先从地图发现空间聚集，再用趋势判断时间变化，最后钻到客户和小组，形成可执行的异常清单。</p>
+    </div>
+    <nav class="strategy-links">
+      <a href="./index.html">进入地图页</a>
+      <a href="./analysis.html">进入趋势分析页</a>
+    </nav>
+  </header>
+
+  <main class="strategy-main">
+    <section class="strategy-grid">
+      <article class="strategy-card primary">
+        <span class="step-no">01</span>
+        <h2>地图先回答：问题在哪里</h2>
+        <p>每个点代表一个客户，点越大表示库存越高，颜色越深表示存销比越高或异常分越高。先找出库存压力是否集中在某个乡镇、小组、商圈。</p>
+      </article>
+      <article class="strategy-card">
+        <span class="step-no">02</span>
+        <h2>趋势再回答：问题是不是持续</h2>
+        <p>库存是每日快照，不做跨天累加；销售和购进可以做 7 天、30 天滚动累计。看库存是否持续上升，存销比是否长期偏高。</p>
+      </article>
+      <article class="strategy-card">
+        <span class="step-no">03</span>
+        <h2>同类对比回答：是不是异常</h2>
+        <p>同类基准建议用：市场类型 + 城乡分类 + 客户档位 + 商圈类型 + 经营业态 + 终端等级。客户不只和全区比，更要和相似客户比。</p>
+      </article>
+      <article class="strategy-card">
+        <span class="step-no">04</span>
+        <h2>清单最后回答：谁需要处理</h2>
+        <p>输出高库存低动销、有库存无销售、购进偏多且压力高、30 天存销比偏高等客户清单，便于客户经理和小组考核落地。</p>
+      </article>
+    </section>
+
+    <section class="strategy-stage">
+      <aside class="strategy-sidebar">
+        <h2>选择一个分析场景</h2>
+        <button class="scenario is-active" data-scenario="area">区县总览</button>
+        <button class="scenario" data-scenario="map">地图定位</button>
+        <button class="scenario" data-scenario="peer">客户同类对比</button>
+        <button class="scenario" data-scenario="group">小组偏离</button>
+        <button class="scenario" data-scenario="action">异常处置</button>
+        <div class="explain">
+          <b>核心口径</b>
+          <p>库存 = 当天库存快照；销售 = 期间累计销售；7 天存销比 = 最新库存 / 最近 7 天销售；30 天存销比 = 最新库存 / 最近 30 天销售。</p>
+        </div>
+      </aside>
+
+      <div class="strategy-board">
+        <div class="board-head">
+          <div>
+            <p class="eyebrow" id="scenarioEyebrow">County View</p>
+            <h2 id="scenarioTitle">区县总览：先看整体库存压力</h2>
+          </div>
+          <span id="scenarioBadge">第一屏</span>
+        </div>
+
+        <div class="mock-layout" id="scenarioMock">
+          <div class="mock-map">
+            <div class="mock-point p1"></div>
+            <div class="mock-point p2 warn"></div>
+            <div class="mock-point p3 danger"></div>
+            <div class="mock-point p4"></div>
+            <div class="mock-point p5 warn"></div>
+            <div class="mock-route"></div>
+            <span class="map-label l1">城区高库存聚集</span>
+            <span class="map-label l2">农网低动销客户</span>
+          </div>
+          <div class="mock-panel">
+            <h3 id="mockPanelTitle">看板先给 4 个结论</h3>
+            <ul id="mockBullets">
+              <li>二星 / 三星客户一共多少户。</li>
+              <li>最新一天库存快照是多少。</li>
+              <li>最近 7 天、30 天存销比是否偏高。</li>
+              <li>异常客户有多少，主要集中在哪些小组。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="logic-row">
+          <div>
+            <h3>页面应该让人怎么用</h3>
+            <p id="usageText">先看全区总览，判断今天库存压力是否值得关注；如果压力偏高，再进入地图看集中区域。</p>
+          </div>
+          <div>
+            <h3>背后的计算表</h3>
+            <p id="tableText">主要来自 rpt_area_terminal_daily_trend 和 rpt_customer_inventory_diagnosis。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel strategy-flow">
+      <div class="panel-head compact">
+        <div>
+          <h2>最终落地成两个正式界面</h2>
+          <p>设计稿只是说明逻辑，正式使用还是回到地图页和趋势分析页。</p>
+        </div>
+      </div>
+      <div class="flow-columns">
+        <div class="flow-box">
+          <h3>地图页：发现和定位</h3>
+          <p>打开后先看点位大小和颜色，筛选档位、小组、市场类型、异常类型；点击客户后看该客户趋势和同类对比。</p>
+          <a href="./index.html">打开地图页</a>
+        </div>
+        <div class="flow-box">
+          <h3>趋势分析页：验证和解释</h3>
+          <p>看全区库存趋势、7 天存销比、30 天存销比，再按小组、档位、城乡、商圈、经营业态拆开比较。</p>
+          <a href="./analysis.html">打开趋势分析页</a>
+        </div>
+        <div class="flow-box">
+          <h3>异常清单：处理和考核</h3>
+          <p>把异常客户、小组偏离、同类差异输出为清单，后期可以变成客户经理跟踪表或月度考核表。</p>
+          <a href="./analysis.html#abnormal">查看异常模块</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./strategy_app.js"></script>
+</body>
+</html>

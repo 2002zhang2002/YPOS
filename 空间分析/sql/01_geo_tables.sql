@@ -1,0 +1,71 @@
+CREATE DATABASE IF NOT EXISTS pos_ods
+  DEFAULT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+USE pos_ods;
+
+CREATE TABLE IF NOT EXISTS rpt_geo_customer_daily (
+  biz_date DATE NOT NULL,
+  shop_id VARCHAR(64) NOT NULL,
+  cust_id VARCHAR(64) NULL,
+  license_code VARCHAR(64) NULL,
+  cust_name VARCHAR(255) NULL,
+  shop_name VARCHAR(255) NULL,
+  cust_seg_name VARCHAR(64) NULL,
+  base_type_name VARCHAR(128) NULL,
+  work_port_name VARCHAR(64) NULL,
+  sale_dept VARCHAR(128) NULL,
+  ss_name VARCHAR(128) NULL,
+  slsman VARCHAR(128) NULL,
+  longitude DECIMAL(12,8) NULL,
+  latitude DECIMAL(12,8) NULL,
+  sale_qty DECIMAL(18,4) NULL,
+  stock_qty DECIMAL(18,4) NULL,
+  order_qty DECIMAL(18,4) NULL,
+  sale_amount DECIMAL(18,4) NULL,
+  stock_amount DECIMAL(18,4) NULL,
+  active_item_count INT NULL,
+  stock_item_count INT NULL,
+  stock_sale_ratio DECIMAL(18,6) NULL,
+  source_row_count INT NULL,
+  etl_loaded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (biz_date, shop_id),
+  KEY idx_geo_customer_seg_date (cust_seg_name, biz_date),
+  KEY idx_geo_customer_org_date (ss_name, slsman, biz_date),
+  KEY idx_geo_customer_loc (longitude, latitude),
+  KEY idx_geo_customer_loaded (etl_loaded_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS rpt_geo_customer_item_daily (
+  biz_date DATE NOT NULL,
+  shop_id VARCHAR(64) NOT NULL,
+  cust_id VARCHAR(64) NULL,
+  license_code VARCHAR(64) NULL,
+  cust_name VARCHAR(255) NULL,
+  shop_name VARCHAR(255) NULL,
+  cust_seg_name VARCHAR(64) NULL,
+  base_type_name VARCHAR(128) NULL,
+  work_port_name VARCHAR(64) NULL,
+  sale_dept VARCHAR(128) NULL,
+  ss_name VARCHAR(128) NULL,
+  slsman VARCHAR(128) NULL,
+  longitude DECIMAL(12,8) NULL,
+  latitude DECIMAL(12,8) NULL,
+  item_key VARCHAR(128) NOT NULL,
+  item_name VARCHAR(255) NULL,
+  barcode VARCHAR(64) NULL,
+  big_barcode VARCHAR(64) NULL,
+  sale_qty DECIMAL(18,4) NULL,
+  stock_qty DECIMAL(18,4) NULL,
+  order_qty DECIMAL(18,4) NULL,
+  sale_amount DECIMAL(18,4) NULL,
+  stock_amount DECIMAL(18,4) NULL,
+  stock_sale_ratio DECIMAL(18,6) NULL,
+  etl_loaded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (biz_date, shop_id, item_key),
+  KEY idx_geo_item_seg_date (cust_seg_name, biz_date),
+  KEY idx_geo_item_name_date (item_name(100), biz_date),
+  KEY idx_geo_item_barcode_date (barcode, biz_date),
+  KEY idx_geo_item_loc (longitude, latitude),
+  KEY idx_geo_item_loaded (etl_loaded_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

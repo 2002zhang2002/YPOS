@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>周期客户明细</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="modern-page">
+  <header class="modern-hero detail-hero">
+    <div>
+      <p class="eyebrow">Customer List</p>
+      <h1 id="detailTitle">周期客户明细</h1>
+      <p id="detailSub">这里先只看当前周期客户构成。点击客户后进入客户画像页，查看三张趋势图和附近3km地图。</p>
+    </div>
+    <nav class="hero-actions">
+      <a href="inventory.html">返回库存趋势</a>
+      <a href="dashboard.html">驾驶舱</a>
+    </nav>
+  </header>
+
+  <main class="weekly-shell customer-drilldown-shell">
+    <section class="detail-summary customer-period-summary" id="detailSummary"></section>
+
+    <section class="panel modern-panel customer-list-panel customer-list-only-panel">
+      <div class="panel-head compact customer-list-head">
+        <div>
+          <h2>客户明细</h2>
+          <p id="customerListHint">当前周期二三星客户快照，默认按库存量排序。</p>
+        </div>
+        <label class="customer-search">
+          <span>搜索</span>
+          <input id="customerSearch" type="search" placeholder="客户 / 档位 / 市场类型 / 小组">
+        </label>
+      </div>
+      <div class="table-wrap modern-table detail-table customer-table customer-list-only-table">
+        <table id="customerExcelTable" class="excel-customer-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>客户</th>
+              <th>客户档位</th>
+              <th>终端等级</th>
+              <th>市场类型</th>
+              <th>库存</th>
+              <th>7天动销</th>
+              <th>7天订购</th>
+              <th>月化7天存销比</th>
+              <th>30天动销</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="dayDetailTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="data/diagnosis_app_data.js"></script>
+  <script src="inventory_detail_app.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>茌平区二星三星终端趋势分析</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Inventory Analysis</p>
+      <h1>茌平区二星 / 三星终端趋势与异常分析</h1>
+      <p class="hero-copy">每日库存、每 7 天存销比观察、客户 7 天/30 天存销比、180 天同类基准异常判断。</p>
+    </div>
+    <div class="hero-meta">
+      <span id="periodText">-</span>
+      <span id="baselineText">-</span>
+      <span id="generatedText">-</span>
+      <a href="./index.html">返回地图</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="cards" id="summaryCards"></section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>茌平区每日库存与存销比趋势</h2>
+          <p>库存为每日快照合计；7 天存销比每隔 7 天突出显示一次；30 天存销比观察长期压力。</p>
+        </div>
+        <div class="legend">
+          <span><i class="line stock"></i>每日库存</span>
+          <span><i class="line ratio7"></i>7天存销比</span>
+          <span><i class="line ratio"></i>30天存销比</span>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg id="trendChart" viewBox="0 0 1100 360" preserveAspectRatio="none"></svg>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head compact">
+        <div>
+          <h2 id="customerTrendTitle">客户每日库存变化趋势</h2>
+          <p>点击客户表或异常表中的客户，加载该客户每日趋势。</p>
+        </div>
+      </div>
+      <div class="chart-wrap small-chart">
+        <svg id="customerTrendChart" viewBox="0 0 1100 260" preserveAspectRatio="none"></svg>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel filters">
+        <h2>筛选与钻取</h2>
+        <label>维度</label>
+        <select id="dimensionSelect">
+          <option value="group_name">所属小组</option>
+          <option value="cust_seg_name">客户档位</option>
+          <option value="market_type">市场类型</option>
+          <option value="work_port_name">城乡分类</option>
+          <option value="business_area_type">商圈类型</option>
+          <option value="base_type_name">经营业态</option>
+          <option value="terminal_level">终端等级</option>
+        </select>
+        <label>搜索客户 / 小组 / 客户经理</label>
+        <input id="searchInput" placeholder="例如：诚信互助小组 / 客户名 / 客户经理">
+        <label>异常类型</label>
+        <select id="abnormalSelect">
+          <option value="">全部</option>
+          <option value="180天同类基准下高库存低动销">180天同类基准下高库存低动销</option>
+          <option value="30天存销比偏高">30天存销比偏高</option>
+          <option value="有库存无销售">有库存无销售</option>
+          <option value="购进偏多且库存压力高">购进偏多且库存压力高</option>
+          <option value="正常">正常</option>
+        </select>
+        <button id="resetBtn">重置筛选</button>
+      </aside>
+
+      <section class="panel main-panel">
+        <div class="tabs">
+          <button class="tab is-active" data-tab="dimension">维度对比</button>
+          <button class="tab" data-tab="group">小组结构与偏离</button>
+          <button class="tab" data-tab="customer">客户同类对比</button>
+          <button class="tab" data-tab="abnormal">异常客户</button>
+        </div>
+
+        <div id="dimensionTab" class="tab-pane is-active">
+          <div class="panel-head compact">
+            <div>
+              <h2 id="dimensionTitle">维度对比</h2>
+              <p>看哪一类客户库存压力高、动销弱、异常客户多。</p>
+            </div>
+          </div>
+          <div class="table-wrap"><table id="dimensionTable"></table></div>
+        </div>
+
+        <div id="groupTab" class="tab-pane">
+          <div class="panel-head compact">
+            <div>
+              <h2>小组结构与偏离</h2>
+              <p>比较小组客户组成、30 天销售、30 天存销比、异常客户占比和小组评分。</p>
+            </div>
+          </div>
+          <div class="table-wrap"><table id="groupTable"></table></div>
+        </div>
+
+        <div id="customerTab" class="tab-pane">
+          <div class="panel-head compact">
+            <div>
+              <h2>客户同类对比</h2>
+              <p>每个客户都有 7 天和 30 天存销比，并和 180 天同类基准比较。</p>
+            </div>
+          </div>
+          <div class="table-wrap"><table id="customerTable"></table></div>
+        </div>
+
+        <div id="abnormalTab" class="tab-pane">
+          <div class="panel-head compact">
+            <div>
+              <h2>异常客户清单</h2>
+              <p>优先处理高库存低动销、有库存无销售、30 天存销比偏高的客户。</p>
+            </div>
+          </div>
+          <div class="table-wrap"><table id="abnormalTable"></table></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="./data/diagnosis_app_data.js"></script>
+  <script src="./common_charts.js"></script>
+  <script src="./analysis_app.js"></script>
+</body>
+</html>

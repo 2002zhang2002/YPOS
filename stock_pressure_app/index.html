@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>茌平区二星三星终端库存地图</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="map-page">
+  <aside class="map-sidebar">
+    <div class="brand-block">
+      <p class="eyebrow">Inventory Map</p>
+      <h1>茌平区二星 / 三星终端库存地图</h1>
+      <p>地图上看客户库存、7天/30天存销比和异常标签。点击地图点位后，右侧直接显示客户趋势。</p>
+    </div>
+
+    <div class="summary-mini" id="summaryCards"></div>
+
+    <div class="filter-stack">
+      <label>地图颜色指标</label>
+      <select id="mapMetricSelect">
+        <option value="stock_sale_ratio_30d">30天存销比</option>
+        <option value="stock_sale_ratio_7d">7天存销比</option>
+        <option value="stock_qty">库存量</option>
+        <option value="abnormal_score">异常分</option>
+      </select>
+
+      <label>维度筛选</label>
+      <select id="dimensionSelect">
+        <option value="">全部</option>
+        <option value="group_name">所属小组</option>
+        <option value="cust_seg_name">客户档位</option>
+        <option value="market_type">市场类型</option>
+        <option value="work_port_name">城乡分类</option>
+        <option value="business_area_type">商圈类型</option>
+        <option value="base_type_name">经营业态</option>
+        <option value="terminal_level">终端等级</option>
+      </select>
+      <select id="dimensionValueSelect">
+        <option value="">全部值</option>
+      </select>
+
+      <label>异常类型</label>
+      <select id="abnormalSelect">
+        <option value="">全部</option>
+        <option value="180天同类基准下高库存低动销">180天同类基准下高库存低动销</option>
+        <option value="30天存销比偏高">30天存销比偏高</option>
+        <option value="有库存无销售">有库存无销售</option>
+        <option value="购进偏多且库存压力高">购进偏多且库存压力高</option>
+        <option value="正常">正常</option>
+      </select>
+
+      <label>搜索客户 / 小组 / 客户经理</label>
+      <input id="searchInput" placeholder="输入客户名、小组、客户经理">
+
+      <button id="resetBtn">重置筛选</button>
+      <a class="analysis-link" href="./analysis.html">打开趋势与表格分析</a>
+    </div>
+
+    <div class="legend-box">
+      <b>地图说明</b>
+      <p>点大小代表库存量；颜色代表所选指标强弱。点击点位可看客户详情与趋势。</p>
+      <p id="mapMeta">-</p>
+    </div>
+  </aside>
+
+  <main class="map-shell">
+    <div id="map"></div>
+    <section class="customer-drawer" id="customerDrawer">
+      <div class="drawer-head">
+        <div>
+          <h2 id="selectedCustomerTitle">未选择客户</h2>
+          <p id="selectedCustomerSub">点击地图点位查看客户库存变化趋势。</p>
+        </div>
+        <button id="closeDrawer">收起</button>
+      </div>
+      <div class="drawer-metrics" id="selectedCustomerMetrics"></div>
+      <div class="chart-wrap drawer-chart">
+        <svg id="customerTrendChart" viewBox="0 0 980 260" preserveAspectRatio="none"></svg>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./data/diagnosis_app_data.js"></script>
+  <script src="./common_charts.js"></script>
+  <script src="./map_app.js"></script>
+</body>
+</html>

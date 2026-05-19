@@ -1,0 +1,56 @@
+# Local secrets and machine-specific settings
+config.json
+.env
+.env.*
+*.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Generated analysis data and transfer/export packages
+analysis_exports/
+transfer_exports/
+stock_pressure_app/data/
+空间分析/exports/
+空间分析/exports_activity/
+空间分析/exports_stock_pressure/
+空间分析/map_demo/
+
+# Archived bundles and old package outputs
+归档_旧版本/
+*.zip
+*.7z
+*.rar
+
+# Build/runtime outputs
+build/
+dist/
+dist_win7/
+downloads/
+offline_bundle/
+output/
+tmp*/
+*.exe
+*.dll
+*.pyd
+*.spec
+
+# Databases, spreadsheets, and large generated data files
+*.sqlite
+*.sqlite3
+*.db
+*.csv
+*.xlsx
+*.xls
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+Thumbs.db
+.DS_Store
+
+# Local project notes that may contain machine-specific instructions
+项目文件说明.md

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>库存经营驾驶舱</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="modern-page">
+  <header class="modern-hero cockpit-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Inventory Cockpit</p>
+      <h1>茌平二三星客户库存经营驾驶舱</h1>
+      <p>先看周库存水位，再下钻到客户明细。当前版本以每周六库存快照为核心，避免日内订货节奏造成误判。</p>
+    </div>
+    <div class="hero-meta">
+      <span id="generatedAt">生成时间：-</span>
+      <span id="periodText">数据周期：-</span>
+      <span><a href="inventory.html">进入库存趋势 →</a></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="cockpit-grid" id="summaryCards"></section>
+
+    <section class="cockpit-layout">
+      <article class="panel cockpit-main">
+        <div class="panel-head compact">
+          <div>
+            <h2>周库存脉搏</h2>
+            <p>每周六取一次库存快照，对比去年同期。这里先判断库存水位是否持续抬升，再进入库存页下钻。</p>
+          </div>
+          <a class="pill-link" href="inventory.html">查看交互趋势</a>
+        </div>
+        <div class="chart-wrap">
+          <svg id="dashboardStockChart" viewBox="0 0 1100 360" preserveAspectRatio="none"></svg>
+        </div>
+      </article>
+
+      <aside class="panel cockpit-side">
+        <h2>当前设计拆解</h2>
+        <div class="thought-list">
+          <div>
+            <b>第一层：驾驶舱</b>
+            <span>只回答“整体是否有压力、压力在哪里、是否值得下钻”。</span>
+          </div>
+          <div>
+            <b>第二层：库存情况</b>
+            <span>周六快照看周期水位和同比，不再用日趋势与均线判断库存压力。</span>
+          </div>
+          <div>
+            <b>第三层：客户明细</b>
+            <span>点击某个周六，把该周期快照下每个客户的库存和月化 7 天存销比摊开。</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head compact">
+        <div>
+          <h2>周快照同比</h2>
+          <p>固定周六取库存快照，展示今年和去年同期的差值、同比幅度。这个口径更贴近订货周期。</p>
+        </div>
+      </div>
+      <div class="table-wrap cockpit-table">
+        <table>
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>库存</th>
+              <th>去年同期库存</th>
+              <th>同比差值</th>
+              <th>同比幅度</th>
+              <th>月化7天存销比</th>
+              <th>去年同期月化7天存销比</th>
+            </tr>
+          </thead>
+          <tbody id="weeklyTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="data/diagnosis_app_data.js"></script>
+  <script src="dashboard_app.js"></script>
+</body>
+</html>
